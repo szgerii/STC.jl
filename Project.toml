@@ -1,0 +1,13 @@
+name = "STC"
+uuid = "5f1345c2-4092-4c5f-a4c1-0bd0b6ca6a9b"
+version = "0.1.0"
+authors = ["Szűcs Gergely <p6odrh@inf.elte.hu>"]
+
+[deps]
+STC_jll = "97a6969c-510b-5948-9de4-431f815e7364"
+
+[compat]
+STC_jll = "0.3.0"
+
+[source]
+STC_jll = { url="https://github.com/szgerii/STC_jll.jl" }
