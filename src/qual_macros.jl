@@ -32,7 +32,6 @@ for qual in NON_LAYOUT_QUALS
     macro_name = Symbol("gl_", qual)
     export_name = Symbol("@", macro_name)
 
-    # Construct a highly generic, standardized docstring
     doc_str = """
         $export_name(expr)
 
