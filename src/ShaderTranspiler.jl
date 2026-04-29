@@ -19,6 +19,21 @@ export ConfigHandle, free_config_handle!, set_config_opts!
 include("transpile.jl")
 include("qual_macros.jl")
 
+#! format: off
+public check_abi
+#! format: on
+
+function check_abi(print_success::Bool=true)
+    lib_abi_ver::UInt8 = ccall((LIBSTC_ABI_VERSION, libstc), UInt8, ())
+    pkg_ver = pkgversion(ShaderTranspiler)
+
+    if pkg_ver.major < lib_abi_ver
+        error("ABI version of libstc loaded by stc_jll ($lib_abi_ver) is incompatible with the current Pkg major version ($pkg_abi_ver)")
+    end
+
+    println("libstc ABI version and Pkg major version are compatible")
+end
+
 function __init__()
     function check_fn_exists(fn::Symbol)
         sym = Libdl.dlsym(handle, fn; throw_error=false)
@@ -36,17 +51,11 @@ function __init__()
     end
 
     check_fn_exists(LIBSTC_ABI_VERSION)
-    lib_abi_ver::UInt8 = ccall((LIBSTC_ABI_VERSION, libstc), UInt8, ())
 
-    pkg_ver::VersionNumber = pkgversion(ShaderTranspiler)
-    if pkg_ver !== nothing
-        pkg_abi_ver = pkg_ver.major
-
-        if pkg_abi_ver < lib_abi_ver
-            error("ABI version of the library loaded by stc_jll ($lib_abi_ver) is incompatible with the current Pkg version ($pkg_abi_ver)")
-        end
+    if pkgversion(ShaderTranspiler) === nothing
+        @warn "Couldn't load ShaderTranspiler's Pkg version at initialization time, ABI compatibility check will be skipped. To perform this check manually, call ShaderTranspiler.check_abi() after initialization."
     else
-        println(stderr, "Couldn't load ShaderTranspiler's Pkg version at initialization time, ABI compatibility check will be skipped.")
+        check_abi(false)
     end
 
     for lib_fn in LibSyms._LIB_FN_SYMS

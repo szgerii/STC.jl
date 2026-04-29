@@ -2,6 +2,9 @@ using Test
 using ShaderTranspiler
 using JuliaGLM
 
+# ensure ABI is checked, even on <1.12 julia
+ShaderTranspiler.check_abi(false)
+
 @testset "ShaderTranspiler.jl" begin
 
     # we mostly check for the lib not throwing any errors here
