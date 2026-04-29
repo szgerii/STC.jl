@@ -31,7 +31,7 @@ function check_abi(print_success::Bool=true)
         error("ABI version of libstc loaded by stc_jll ($lib_abi_ver) is incompatible with the current Pkg major version ($pkg_abi_ver)")
     end
 
-    println("libstc ABI version and Pkg major version are compatible")
+    print_success && println("libstc ABI version and Pkg major version are compatible")
 end
 
 function __init__()
