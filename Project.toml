@@ -1,6 +1,6 @@
 name = "ShaderTranspiler"
 uuid = "5f1345c2-4092-4c5f-a4c1-0bd0b6ca6a9b"
-version = "0.8.1"
+version = "0.8.2"
 authors = ["Szűcs Gergely <p6odrh@inf.elte.hu>"]
 
 [deps]
@@ -10,11 +10,11 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 stc_jll = "8dead81b-3450-5e2f-948b-0f2a405f2b3d"
 
 [sources]
-stc_jll = {url = "https://github.com/ShaderTranspiler/stc_jll.jl"}
-JuliaGLM = {url = "https://github.com/Csabix/JuliaGLM", rev="glsl-functions"}
+stc_jll = { url = "https://github.com/ShaderTranspiler/stc_jll.jl" }
+JuliaGLM = { url = "https://github.com/Csabix/JuliaGLM", rev = "glsl-functions" }
 
 [compat]
 JuliaGLM = "0.0.1"
 Libdl = "1.11.0"
 Test = "1.11.0"
-stc_jll = "0.8.1"
+stc_jll = "0.8.2"
