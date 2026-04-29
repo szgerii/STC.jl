@@ -19,7 +19,8 @@ ShaderTranspiler.check_abi(false)
             forward_fns=false,
             dump_parsed=true,
             dump_lowered=true,
-            warn_on_jl_sema_query=true
+            warn_on_jl_sema_query=true,
+            local_size=UInt32.((1, 2, 3))
         )
 
         set_err_dump! = ShaderTranspiler.Config.set_err_dump_verbosity!
@@ -33,6 +34,9 @@ ShaderTranspiler.check_abi(false)
 
         @test_throws DomainError set_err_dump!(cfg, 0x03)
         @test_throws DomainError set_err_dump!(cfg, 0xff)
+
+        ShaderTranspiler.Config.set_local_size!(cfg, UInt32.((0, 0, 0)))
+        ShaderTranspiler.Config.set_local_size!(cfg, UInt32.((1, 2, 3)))
 
         free_config_handle!(cfg)
         @test cfg.ptr == C_NULL

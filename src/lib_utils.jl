@@ -46,7 +46,8 @@ const CFG_OPTIONS = [
     (:dump_parsed, Bool),
     (:dump_sema, Bool),
     (:dump_lowered, Bool),
-    (:target_version, String)
+    (:target_version, String),
+    (:local_size, Tuple{UInt32,UInt32,UInt32})
 ]
 
 macro _gen_cfg_consts()

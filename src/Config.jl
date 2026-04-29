@@ -112,14 +112,33 @@ macro _gen_cfg_setters()
 
         ArgTy = ValTy == String ? Cstring : ValTy
 
+        if ArgTy <: Tuple
+            @assert length(ArgTy.parameters) != 0
+        end
+
+        base_fn_def =
+            if ArgTy <: Tuple
+                arg_tys::Vector{DataType} = [T for T in ValTy.parameters]
+
+                ccall_sig::Expr = :(Ptr{Cvoid}, $(Symbol.(arg_tys)...))
+                ccall_args::Vector{Expr} = [:(value[$i]) for i in 1:length(arg_tys)]
+
+                :(function $fn_name(ptr::Ptr{Cvoid}, value::$ValTy)
+                    ptr == C_NULL && return
+                    ccall(($lib_fn_const, libstc), Cvoid, $ccall_sig, ptr, $(ccall_args...))
+                end)
+            else
+                :(function $fn_name(ptr::Ptr{Cvoid}, value::$ValTy)
+                    ptr == C_NULL && return
+                    ccall(($lib_fn_const, libstc), Cvoid, (Ptr{Cvoid}, $ArgTy), ptr, value)
+                end)
+            end
+
         fn_def = quote
             export $fn_name
 
             @doc $doc_str
-            function $fn_name(ptr::Ptr{Cvoid}, value::$ValTy)
-                ptr == C_NULL && return
-                ccall(($lib_fn_const, libstc), Cvoid, (Ptr{Cvoid}, $ArgTy), ptr, value)
-            end
+            $base_fn_def
 
             function $fn_name(handle::ConfigHandle, value::$ValTy)
                 $(fn_name)(handle.ptr, value)
@@ -181,7 +200,7 @@ function _gen_main_setter_docs()
         push!(doc_lines, "- $(replace(string(opt), '_' => "\\_"))::$ValTy")
     end
 
-    doc_str = join(doc_lines, '\n')
+    return join(doc_lines, '\n')
 end
 
 export set_config_opts!
