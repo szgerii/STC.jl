@@ -10,8 +10,8 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 stc_jll = "8dead81b-3450-5e2f-948b-0f2a405f2b3d"
 
 [sources]
-stc_jll = { url = "https://github.com/ShaderTranspiler/stc_jll.jl" }
-JuliaGLM = { url = "https://github.com/Csabix/JuliaGLM", rev = "glsl-functions" }
+JuliaGLM = {rev = "glsl-functions", url = "https://github.com/Csabix/JuliaGLM"}
+stc_jll = {url = "https://github.com/ShaderTranspiler/stc_jll.jl"}
 
 [compat]
 JuliaGLM = "0.0.1"
@@ -19,5 +19,5 @@ Libdl = "1.11.0"
 Test = "1.11.0"
 stc_jll = "0.8.2"
 
-[apps]
-stc = {submodule = "CLI"}
+[apps.stc]
+submodule = "CLI"
