@@ -65,4 +65,6 @@ function __init__()
     Libdl.dlclose(handle)
 end
 
+include("CLI.jl")
+
 end
